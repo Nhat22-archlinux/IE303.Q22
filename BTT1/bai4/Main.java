@@ -1,0 +1,51 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class Main {
+    static int n, k;
+    static int[] a;
+    static List<Integer> best = new ArrayList<>();
+    static List<Integer> current = new ArrayList<>();
+
+    static void backtrack(int index, int sum) {
+        if (sum == k) {
+            if (current.size() > best.size()) {
+                best = new ArrayList<>(current);
+            }
+            return;
+        }
+
+        if (index == n || sum > k) return;
+
+        current.add(a[index]);
+        backtrack(index + 1, sum + a[index]);
+        current.remove(current.size() - 1);
+
+        backtrack(index + 1, sum);
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        n = sc.nextInt();
+        k = sc.nextInt();
+
+        a = new int[n];
+        for (int i = 0; i < n; i++) {
+            a[i] = sc.nextInt();
+        }
+
+        backtrack(0, 0);
+
+        if (best.isEmpty()) {
+            System.out.println("Khong co day con");
+        } else {
+            for (int i = 0; i < best.size(); i++) {
+                if (i > 0) System.out.print(" ");
+                System.out.print(best.get(i));
+            }
+			System.out.println();
+        }
+    }
+}
